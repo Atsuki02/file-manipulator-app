@@ -1,15 +1,25 @@
 import sys
 
+manipulator = sys.argv[1]
 input_path = sys.argv[2]
 output_path = sys.argv[3]
 
-print(input_path, output_path)
+
+def operate(input_path, output_path, manipulator):
+    if manipulator == 'reverse':
+        return reverse(input_path, output_path)
+    else:
+        print(f"Unknown manipulator: {manipulator}")
 
 
-# read input file
-with open(input_path) as f:
-    contents = f.read()
+def reverse(input_path, output_path):
+    # read input file
+    with open(input_path) as f:
+        contents = f.read()
 
-# reverse contents and writ
-with open(output_path, 'w') as f:
-    f.write(contents[::-1])
+    # reverse contents and write
+    with open(output_path, 'w') as f:
+        f.write(contents[::-1])
+
+# call function
+operate(input_path, output_path, manipulator)
