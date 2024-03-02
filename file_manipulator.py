@@ -1,61 +1,67 @@
 import sys
 
+if __name__ == "__main__":
+    if len(sys.argv) < 4:
+        print("Usage: <script> manipulator input_path output_path [newstring]")
+        sys.exit(1)
+
 manipulator = sys.argv[1]
 input_path = sys.argv[2]
 output_path = sys.argv[3]
-newstring = sys.argv[4]
+newstring = sys.argv[4] if len(sys.argv) > 4 else None
 
 
 def main(input_path, output_path, manipulator):
+
+    contents = read_file(input_path)
+
     if manipulator == 'reverse':
-        return reverse(input_path, output_path)
+        result = reverse(contents)
     
     elif manipulator == 'copy':
-        return copy(input_path, output_path)
+        result = copy(contents)
     elif manipulator == 'duplicate-contents':
-        return duplicate_contents(input_path, output_path)
+        result = duplicate_contents(contents, output_path)
+        output_path = input_path
     elif manipulator == 'replace-string':
-        return replace_string(input_path, output_path, newstring)
+        result = replace_string(contents, output_path, newstring)
+        output_path = input_path
     else:
         print(f"Unknown manipulator: {manipulator}")
 
+    write_file(output_path, result)
 
-def reverse(input_path, output_path):
+
+def read_file(file_path):
     # read input file
-    with open(input_path) as f:
-        contents = f.read()
+    with open(file_path, 'r') as f:
+        return f.read()
 
-    # reverse contents and write
-    with open(output_path, 'w') as f:
-        f.write(contents[::-1])
-
-def copy(input_path, output_path):
-    # read input file
-    with open(input_path) as f:
-        contents = f.read()
-
-    with open(output_path, 'w') as f:
+def write_file(file_path, contents):
+    # write contents in file_path
+    with open(file_path, 'w') as f:
         f.write(contents)
 
-def duplicate_contents(input_path, n):
-    # read input file
-    with open(input_path) as f:
-        contents = f.read()
 
+def reverse(contents):
+    # reverse contents and write
+    return contents[::-1]
+
+def copy(contents):
+    # copy contents
+    return contents
+
+def duplicate_contents(contents, n):
     # duplicate input contents
-    with open(input_path, 'w') as f:
-        for _ in range(int(n) + 1):
-            f.write(contents)
+    result = ''
+    for _ in range(int(n) + 1):
+        copy += contents
+    return result
 
-def replace_string(input_path, needle, newstring):
-    # read input file
-    with open(input_path) as f:
-        contents = f.read()
-
+def replace_string(contents, needle, newstring):
     # replace needle with newstring
-        replaced_string = contents.replace(needle, newstring)
-        with open(input_path, 'w') as f:
-            f.write(replaced_string)
+    return contents.replace(needle, newstring)
+
 
         
 
