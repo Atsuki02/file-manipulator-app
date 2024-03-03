@@ -1,13 +1,14 @@
 import sys
+import markdown
 
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 3:
         print("Usage: <script> manipulator input_path output_path [newstring]")
         sys.exit(1)
 
 manipulator = sys.argv[1]
 input_path = sys.argv[2]
-output_path = sys.argv[3]
+output_path = sys.argv[3] if len(sys.argv) > 3 else None
 newstring = sys.argv[4] if len(sys.argv) > 4 else None
 
 
@@ -25,6 +26,9 @@ def main(input_path, output_path, manipulator):
         output_path = input_path
     elif manipulator == 'replace-string':
         result = replace_string(contents, output_path, newstring)
+        output_path = input_path
+    elif manipulator == 'convert-markdown-to-html':
+        result = convert_markdown_to_html(contents)
         output_path = input_path
     else:
         print(f"Unknown manipulator: {manipulator}")
@@ -61,6 +65,9 @@ def duplicate_contents(contents, n):
 def replace_string(contents, needle, newstring):
     # replace needle with newstring
     return contents.replace(needle, newstring)
+
+def convert_markdown_to_html(contents):
+    return markdown.markdown(contents)
 
 
         
